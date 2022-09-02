@@ -1,0 +1,107 @@
+{
+  "env": {
+    "browser": true,
+    "es2021": true
+  },
+  "ignorePatterns": ["node_modules", "dist", "build"],
+  "extends": [
+    "eslint:recommended",
+    "plugin:react/recommended",
+    "plugin:prettier/recommended",
+    "plugin:import/errors",
+    "plugin:import/warnings",
+    "airbnb",
+    "prettier"
+  ],
+  "parser": "@babel/eslint-parser",
+  "parserOptions": {
+    "requireConfigFile": false,
+    "babelOptions": {
+    "presets": ["@babel/preset-react"]
+  },
+    "ecmaFeatures": {
+      "jsx": true,
+      "experimentalObjectRestSpread": true      
+    },
+    "ecmaVersion": 12,
+    "sourceType": "module"
+  },
+  "plugins": ["react", "prettier", "import"],
+  "rules": {
+    "indent": ["error", 2, {"SwitchCase": 1 }],
+    "no-console": "off",
+    "react/static-property-placement": "off",
+    "react/destructuring-assignment": "off",
+    "jsx-a11y/label-has-associated-control": [ 2, {
+      "labelComponents": ["CustomInputLabel"],
+      "labelAttributes": ["label"],
+      "controlComponents": ["CustomInput"],
+      "depth": 3
+    }],
+    "jsx-a11y/control-has-associated-label": [ 2, {
+      "labelAttributes": ["label"],
+      "controlComponents": ["CustomComponent"],
+      "ignoreElements": [
+        "input",
+        "span",
+        "button"
+      ],
+      "depth": 3
+    }],
+    "class-methods-use-this": ["error", { "exceptMethods": ["filterItems"] }],
+    "jsx-a11y/no-autofocus": "off",
+    "prettier/prettier": "error",
+    "linebreak-style": [0, "unix"],
+    "quotes": ["error", "single"],
+    "semi": ["error", "always"],
+    "no-plusplus": "off",
+    "no-param-reassign": ["error", { "props": false }],
+    "react/react-in-jsx-scope": "off",
+    "react/jsx-props-no-spreading": "off",
+    "react/prop-types": 0,
+    "import/no-unresolved": [
+      2,
+      {
+        "caseSensitive": false
+      }
+    ],
+    "func-style": [
+      "error", "declaration", 
+      { "allowArrowFunctions": true }
+    ],
+    "react/function-component-definition": [
+      2,
+      {
+        "namedComponents": "arrow-function",
+        "unnamedComponents": "arrow-function"
+      }
+    ],
+    "react/jsx-filename-extension": [
+      1,
+      {
+        "extensions": [".js", ".jsx"]
+      }
+    ],
+    "import/order": [
+      2,
+      {
+        "groups": ["builtin", "external", "internal", "parent", "sibling", "index"],
+        "newlines-between": "always"
+      }
+    ]
+  },
+    "overrides": [
+    {
+      "files": ["files/transformed/by/babel/*.js"],
+      "parser": "babel-eslint"
+    }
+  ],
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "extensions": [".js", ".jsx", ".ts", ".tsx"],
+        "moduleDirectory": ["node_modules", "src/"]
+      }
+    }
+  }
+}
