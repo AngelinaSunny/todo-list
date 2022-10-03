@@ -12,11 +12,7 @@ export default class App extends Component {
     super(props);
 
     this.state = {
-      statusItem: [
-        this.createTodoItem('Completed task'),
-        this.createTodoItem('Editing task'),
-        this.createTodoItem('Active task'),
-      ],
+      statusItem: [this.createTodoItem('Task1'), this.createTodoItem('Task2'), this.createTodoItem('Task3')],
       filter: 'all',
     };
   }
@@ -35,8 +31,8 @@ export default class App extends Component {
     this.toggleProperty(id, 'completed');
   };
 
-  addItem = (text) => {
-    const newItem = this.createTodoItem(text);
+  addItem = (text, minutes, seconds) => {
+    const newItem = this.createTodoItem(text, minutes, seconds);
     this.setState(({ statusItem }) => {
       const newArr = [...statusItem, newItem];
       return {
@@ -99,9 +95,11 @@ export default class App extends Component {
     }));
   };
 
-  createTodoItem(text) {
+  createTodoItem(text, minutes, seconds) {
     return {
       text,
+      minutes,
+      seconds,
       active: true,
       completed: false,
       editing: false,

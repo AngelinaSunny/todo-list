@@ -7,6 +7,8 @@ export default class Task extends Component {
   static defaultProps = {
     updateInterval: 1000,
     text: 'Enter your task',
+    minutes: '25',
+    seconds: '00',
     completed: false,
     editing: false,
     id: 999,
@@ -18,6 +20,8 @@ export default class Task extends Component {
 
   static propTypes = {
     text: PropTypes.string,
+    minutes: PropTypes.string,
+    seconds: PropTypes.string,
     completed: PropTypes.bool,
     editing: PropTypes.bool,
     onDeleted: PropTypes.func,
@@ -35,7 +39,12 @@ export default class Task extends Component {
       textNew: this.props.text,
       dateCreate: new Date(),
       currentTime: '',
+      minutes: this.props.minutes,
+      seconds: this.props.seconds,
+      timer: null,
     };
+
+    this.onWorkTimer = this.onWorkTimer.bind(this);
   }
 
   componentDidMount() {
@@ -57,6 +66,35 @@ export default class Task extends Component {
     e.preventDefault();
     this.props.editingItem(this.props.id, this.state.textNew);
   };
+
+  onWorkTimer(e) {
+    clearInterval(this.state.timer);
+    // eslint-disable-next-line prefer-const
+    let timer = setInterval(() => {
+      const { seconds, minutes } = this.state;
+      // eslint-disable-next-line prefer-const
+      if (e.target.name === 'start') {
+        const changeSeconds = seconds - 1;
+        if (seconds === 0 && minutes === 0) {
+          clearInterval(timer);
+        } else if (seconds <= 0 && minutes > 0) {
+          this.setState({
+            seconds: 59,
+            minutes: minutes - 1,
+          });
+        } else {
+          this.setState({
+            seconds: changeSeconds,
+          });
+        }
+      } else if (e.target.name === 'pause') {
+        clearInterval(timer);
+      }
+    }, 1000);
+    return this.setState({
+      timer,
+    });
+  }
 
   render() {
     const { text, completed, editing, onDeleted, onToggleCompleted, onToggleEditing } = this.props;
@@ -81,7 +119,15 @@ export default class Task extends Component {
             onChange={onToggleCompleted}
           />
           <label>
-            <span className="description"> {text} </span> <span className="created"> {textTime} </span>{' '}
+            <span className="title"> {text} </span>
+            <span className="description">
+              <button className="icon icon-play" type="button" name="start" onClick={this.onWorkTimer} />
+              <button className="icon icon-pause" type="button" name="pause" onClick={this.onWorkTimer} />
+              <span className="text-time">
+                {this.state.minutes}:{this.state.seconds}
+              </span>
+            </span>
+            <span className="description"> {textTime} </span>
           </label>{' '}
           <button className="icon icon-edit" type="button" onClick={onToggleEditing} />{' '}
           <button className="icon icon-destroy" type="button" onClick={onDeleted} />
