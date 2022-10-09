@@ -122,7 +122,7 @@ const Task = ({
           </span>
           <span className="description"> {textTime} </span>
         </label>{' '}
-        <button className="icon icon-edit" type="button" onClick={onToggleEditing} />{' '}
+        <button className="icon icon-edit" type="button" onClick={onToggleEditing} />
         <button className="icon icon-destroy" type="button" onClick={onDeleted} />
       </div>{' '}
       {editing && (
@@ -137,7 +137,7 @@ const Task = ({
                 textNew: e.target.value,
               });
             }}
-          />{' '}
+          />
         </form>
       )}
     </li>

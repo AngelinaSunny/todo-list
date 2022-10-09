@@ -28,27 +28,30 @@
   },
   "plugins": ["react", "prettier", "import"],
   "rules": {
-    "indent": ["error", 2, {"SwitchCase": 1 }],
+    "indent": ["error", 2, { "SwitchCase": 1 }],
     "no-console": "off",
     "react/static-property-placement": "off",
     "react/destructuring-assignment": "off",
-    "jsx-a11y/label-has-associated-control": [ 2, {
-      "labelComponents": ["CustomInputLabel"],
-      "labelAttributes": ["label"],
-      "controlComponents": ["CustomInput"],
-      "depth": 3
-    }],
-    "jsx-a11y/control-has-associated-label": [ 2, {
-      "labelAttributes": ["label"],
-      "controlComponents": ["CustomComponent"],
-      "ignoreElements": [
-        "input",
-        "span",
-        "button"
-      ],
-      "depth": 3
-    }],
+    "jsx-a11y/label-has-associated-control": [
+      2,
+      {
+        "labelComponents": ["CustomInputLabel"],
+        "labelAttributes": ["label"],
+        "controlComponents": ["CustomInput"],
+        "depth": 3
+      }
+    ],
+    "jsx-a11y/control-has-associated-label": [
+      2,
+      {
+        "labelAttributes": ["label"],
+        "controlComponents": ["CustomComponent"],
+        "ignoreElements": ["input", "span", "button"],
+        "depth": 3
+      }
+    ],
     "class-methods-use-this": ["error", { "exceptMethods": ["filterItems"] }],
+    "prefer-const": "off",
     "jsx-a11y/no-autofocus": "off",
     "prettier/prettier": "error",
     "linebreak-style": [0, "unix"],
@@ -65,10 +68,7 @@
         "caseSensitive": false
       }
     ],
-    "func-style": [
-      "error", "declaration", 
-      { "allowArrowFunctions": true }
-    ],
+    "func-style": ["error", "declaration", { "allowArrowFunctions": true }],
     "react/function-component-definition": [
       2,
       {
