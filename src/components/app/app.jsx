@@ -1,83 +1,79 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 
 import HeaderApp from '../header-app';
 import MainApp from '../main-app/main-app';
 
 import './app.css';
 
-export default class App extends Component {
-  maxId = 100;
+const App = () => {
+  let maxId = 100;
+  const createTodoItem = (text, minutes, seconds) => ({
+    text,
+    minutes,
+    seconds,
+    active: true,
+    completed: false,
+    editing: false,
+    id: maxId++,
+  });
 
-  constructor(props) {
-    super(props);
+  const [filter, setFilter] = useState('all');
+  const [statusItem, setStatusItem] = useState([
+    createTodoItem('Task1', '20', '10'),
+    createTodoItem('Task2', '5', '25'),
+    createTodoItem('Task3', '2', '20'),
+  ]);
 
-    this.state = {
-      statusItem: [this.createTodoItem('Task1'), this.createTodoItem('Task2'), this.createTodoItem('Task3')],
-      filter: 'all',
-    };
-  }
+  const onFilterChange = (fil) => {
+    setFilter(fil);
+  };
 
-  onFilterChange = (filter) => {
-    this.setState({
-      filter,
+  const toggleProperty = (id, propName) => {
+    setStatusItem((s) => {
+      const newArr = s.map((el, i) => {
+        if (el.id === id) {
+          el[propName] = !s[i][propName];
+        }
+        return el;
+      });
+      return newArr;
     });
   };
 
-  onToggleEditing = (id) => {
-    this.toggleProperty(id, 'editing');
+  const onToggleEditing = (id) => {
+    toggleProperty(id, 'editing');
   };
 
-  onToggleCompleted = (id) => {
-    this.toggleProperty(id, 'completed');
+  const onToggleCompleted = (id) => {
+    toggleProperty(id, 'completed');
   };
 
-  addItem = (text, minutes, seconds) => {
-    const newItem = this.createTodoItem(text, minutes, seconds);
-    this.setState(({ statusItem }) => {
-      const newArr = [...statusItem, newItem];
-      return {
-        statusItem: newArr,
-      };
-    });
+  const addItem = (text, minutes, seconds) => {
+    const newItem = createTodoItem(text, minutes, seconds);
+    setStatusItem((s) => [...s, newItem]);
   };
 
-  editingItem = (id, text) => {
-    this.setState(({ statusItem }) => {
-      const newArr = statusItem.map((el, i) => {
+  const editingItem = (id, text) => {
+    setStatusItem((s) => {
+      const newArr = s.map((el, i) => {
         if (el.id === id) {
           el.text = text;
-          el.editing = !statusItem[i].editing;
+          el.editing = !s[i].editing;
         }
         return el;
       });
-      return {
-        statusItem: newArr,
-      };
+      return newArr;
     });
   };
 
-  deleteItem = (id) => {
-    this.setState(({ statusItem }) => ({
-      statusItem: statusItem.filter((item) => item.id !== id),
-    }));
-  };
-
-  toggleProperty = (id, propName) => {
-    this.setState(({ statusItem }) => {
-      const newArr = statusItem.map((el, i) => {
-        if (el.id === id) {
-          el[propName] = !statusItem[i][propName];
-        }
-        return el;
-      });
-      return {
-        statusItem: newArr,
-      };
+  const deleteItem = (id) => {
+    setStatusItem((s) => {
+      s.filter((item) => item.id !== id);
     });
   };
 
-  filterItems = (items, filter) => {
-    switch (filter) {
+  const filterItems = (items, fil) => {
+    switch (fil) {
       case 'all':
         return items;
       case 'active':
@@ -89,44 +85,31 @@ export default class App extends Component {
     }
   };
 
-  clearCompleted = () => {
-    this.setState(({ statusItem }) => ({
-      statusItem: statusItem.filter((el) => !el.completed),
-    }));
+  const clearCompleted = () => {
+    setStatusItem((s) => {
+      s.filter((el) => !el.completed);
+    });
   };
 
-  createTodoItem(text, minutes, seconds) {
-    return {
-      text,
-      minutes,
-      seconds,
-      active: true,
-      completed: false,
-      editing: false,
-      id: this.maxId++,
-    };
-  }
+  const leftItem = statusItem.filter((el) => !el.completed).length;
+  const visibleItems = filterItems(statusItem, filter);
 
-  render() {
-    const leftItem = this.state.statusItem.filter((el) => !el.completed).length;
-    const { statusItem, filter } = this.state;
-    const visibleItems = this.filterItems(statusItem, filter);
+  return (
+    <section className="todoapp">
+      <HeaderApp addItem={addItem} />{' '}
+      <MainApp
+        status={visibleItems}
+        onDeleted={deleteItem}
+        onToggleCompleted={onToggleCompleted}
+        onToggleEditing={onToggleEditing}
+        editingItem={editingItem}
+        leftItem={leftItem}
+        clearCompleted={clearCompleted}
+        filter={filter}
+        onFilterChange={onFilterChange}
+      />{' '}
+    </section>
+  );
+};
 
-    return (
-      <section className="todoapp">
-        <HeaderApp addItem={this.addItem} />{' '}
-        <MainApp
-          status={visibleItems}
-          onDeleted={this.deleteItem}
-          onToggleCompleted={this.onToggleCompleted}
-          onToggleEditing={this.onToggleEditing}
-          editingItem={this.editingItem}
-          leftItem={leftItem}
-          clearCompleted={this.clearCompleted}
-          filter={filter}
-          onFilterChange={this.onFilterChange}
-        />{' '}
-      </section>
-    );
-  }
-}
+export default App;
