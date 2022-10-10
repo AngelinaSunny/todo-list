@@ -95,9 +95,11 @@ const Task = ({
   }, [startTimer, sec, min]);
 
   const onWorkTimer = (e) => {
-    if (e.target.name === 'start') {
+    if (e.target.name === 'start' && itemClassName !== 'completed') {
       setStartTimer(true);
     } else if (e.target.name === 'pause') {
+      setStartTimer(false);
+    } else if (e.target.name === 'check') {
       setStartTimer(false);
     }
   };
@@ -106,10 +108,14 @@ const Task = ({
     <li className={itemClassName}>
       <div className="view">
         <input
+          name="check"
           className="toggle"
           type="checkbox"
           checked={itemClassName === 'completed'}
-          onChange={onToggleCompleted}
+          onChange={(e) => {
+            onToggleCompleted();
+            onWorkTimer(e);
+          }}
         />
         <label>
           <span className="title"> {text} </span>
