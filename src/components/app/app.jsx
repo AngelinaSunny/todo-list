@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 
 import HeaderApp from '../header-app';
 import MainApp from '../main-app/main-app';
@@ -6,9 +6,15 @@ import MainApp from '../main-app/main-app';
 import './app.css';
 
 const App = () => {
+  const startData = [
+    { text: 'Task1', minutes: '20', seconds: '10', active: true, completed: false, editing: false, id: 97 },
+    { text: 'Task2', minutes: '15', seconds: '15', active: true, completed: false, editing: false, id: 98 },
+    { text: 'Task3', minutes: '2', seconds: '30', active: true, completed: false, editing: false, id: 99 },
+  ];
   const [maxId, setMaxId] = useState(100);
   const [filter, setFilter] = useState('all');
   const [isChange, setChange] = useState(false);
+  const [statusItem, setStatusItem] = useState(startData);
 
   const createTodoItem = (text, minutes, seconds) => ({
     text,
@@ -26,12 +32,6 @@ const App = () => {
       setChange(false);
     }
   }, [isChange]);
-
-  const [statusItem, setStatusItem] = useState([
-    { text: 'Task1', minutes: '20', seconds: '10', active: true, completed: false, editing: false, id: 97 },
-    { text: 'Task2', minutes: '15', seconds: '15', active: true, completed: false, editing: false, id: 98 },
-    { text: 'Task3', minutes: '2', seconds: '30', active: true, completed: false, editing: false, id: 99 },
-  ]);
 
   const onFilterChange = (fil) => {
     setFilter(fil);
@@ -77,9 +77,7 @@ const App = () => {
   };
 
   const deleteItem = (id) => {
-    setStatusItem((s) => {
-      s.filter((item) => item.id !== id);
-    });
+    setStatusItem((s) => s.filter((item) => item.id !== id));
   };
 
   const filterItems = (items, fil) => {
@@ -96,9 +94,7 @@ const App = () => {
   };
 
   const clearCompleted = () => {
-    setStatusItem((s) => {
-      s.filter((el) => !el.completed);
-    });
+    setStatusItem((s) => s.filter((el) => !el.completed));
   };
 
   const leftItem = statusItem.filter((el) => !el.completed).length;

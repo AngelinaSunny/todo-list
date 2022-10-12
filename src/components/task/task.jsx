@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { formatDistanceToNow } from 'date-fns';
 import './task.css';
@@ -42,10 +42,10 @@ const Task = ({
   };
 
   const [taskData, setTaskData] = useState({
-    textNew: text,
     dateCreate: new Date(),
     currentTime: '',
   });
+  const [textNew, setTextNew] = useState(text);
   const [min, setMin] = useState(minutes);
   const [sec, setSec] = useState(seconds);
   const [startTimer, setStartTimer] = useState(false);
@@ -74,7 +74,8 @@ const Task = ({
 
   const onSubmit = (e) => {
     e.preventDefault();
-    editingItem(id, taskData.textNew);
+    console.log(textNew);
+    editingItem(id, textNew);
   };
 
   useEffect(() => {
@@ -138,10 +139,7 @@ const Task = ({
             className="edit"
             defaultValue={text}
             onChange={(e) => {
-              setTaskData({
-                ...taskData,
-                textNew: e.target.value,
-              });
+              setTextNew(e.target.value);
             }}
           />
         </form>

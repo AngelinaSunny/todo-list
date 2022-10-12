@@ -1,4 +1,3 @@
-import React from 'react';
 import PropTypes from 'prop-types';
 
 import Filters from '../task-filter';
@@ -27,8 +26,7 @@ const Footer = ({ leftItem, clearCompleted, filter, onFilterChange }) => {
       <span className="todo-count"> {leftText} </span>
       <Filters clearCompleted={clearCompleted} filter={filter} onFilterChange={onFilterChange} />
       <button className="clear-completed" type="button" onClick={clearCompleted}>
-        {' '}
-        Clear completed{' '}
+        Clear completed
       </button>
     </footer>
   );
